@@ -118,6 +118,7 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel-api/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/laravel-api/vendor/nunomaduro/collision" />
       <excludeFolder url="file://$MODULE_DIR$/laravel-api/vendor/tijsverkoyen/css-to-inline-styles" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel-api/vendor/laravel/sanctum" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
