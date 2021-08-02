@@ -21,8 +21,7 @@ class ContactController extends Controller
     }
 
 
-
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $this->service
             ->validate($request)
@@ -41,12 +40,11 @@ class ContactController extends Controller
     }
 
 
-
     public function update(Request $request, Contact $contact)
     {
         $this->service
             ->setModel($contact)
-            ->validate($request)
+            ->validateUpdate($request)
             ->update($request);
 
         return response()->json([

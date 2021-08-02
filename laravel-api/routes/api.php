@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\SupportDataController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,9 @@ Route::group(['prefix' => 'v1'], function (Router $router) {
         $router->get('/user', function (Request $request) {
             return $request->user();
         });
+
+        $router->get('support/groups', [SupportDataController::class, 'groups'])
+            ->name('support.groups');
 
         $router->resource('contact', ContactController::class);
 

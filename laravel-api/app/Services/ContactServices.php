@@ -20,20 +20,20 @@ class ContactServices extends BaseServices
     {
         return $this->model->newQuery()
             ->with('contactDetails', 'groups')
-            ->when($request->email, function (Builder $builder) use ($request) {
+            ->when($request->filled('email'), function (Builder $builder) use ($request) {
                 $builder->whereHas('contactDetails', function (Builder $builder) use ($request) {
                     $builder->where('email', $request->email);
                 });
             })
-            ->when($request->phone, function (Builder $builder) use ($request) {
+            ->when($request->filled('phone'), function (Builder $builder) use ($request) {
                 $builder->whereHas('contactDetails', function (Builder $builder) use ($request) {
                     $builder->where('phone', $request->phone);
                 });
             })
-            ->when($request->name, function (Builder $builder) use ($request) {
+            ->when($request->filled('name'), function (Builder $builder) use ($request) {
                 $builder->where('name', 'like', "%{$request->name}%");
             })
-            ->when($request->group, function (Builder $builder) use ($request) {
+            ->when($request->filled('group'), function (Builder $builder) use ($request) {
                 $builder->whereHas('groups', function (Builder $builder) use ($request) {
                     $builder->where('group_id', $request->group);
                 });
@@ -49,9 +49,30 @@ class ContactServices extends BaseServices
             'email.*' => 'required|unique:contact_details,email',
             'phone.*' => 'required|unique:contact_details,phone',
             'group_id.*' => 'required',
-            'is_favorit' => 'nullable|numeric'
+            'is_favorit' => 'nullable'
 
         ]);
+
+        return $this;
+    }
+
+    public function validateUpdate($request)
+    {
+        $request->validate([
+
+            'name' => 'required|string',
+            'group_id.*' => 'required',
+            'is_favorit' => 'nullable'
+
+        ]);
+
+        foreach ($request->contact_details_id as $key => $contact_details_id)
+        {
+            $request->validate([
+                'email.'.$key => 'required|unique:contact_details,email,'.$contact_details_id,
+                'phone.'.$key => 'required|unique:contact_details,phone,'.$contact_details_id,
+            ]);
+        }
 
         return $this;
     }
